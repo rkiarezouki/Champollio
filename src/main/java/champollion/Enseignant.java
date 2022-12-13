@@ -6,7 +6,7 @@ public class Enseignant extends Personne {
 
 
     List<ServicePrevu> servicesPrevus = new ArrayList<>();
-
+    List<Intervention> lesInterventions = new ArrayList<Intervention>();
 
     public Enseignant(String nom, String email) {
         super(nom, email);
@@ -84,6 +84,33 @@ public class Enseignant extends Personne {
       }
     }
 
-    public void ajouterIntervention(Intervention intervention)
+    public void ajouterIntervention(Intervention intervention){
+        boolean inter_valide = false;
+
+        for(ServicePrevu service : servicesPrevus){
+            if(service.getUe().equals(intervention.getUE())){
+                inter_valide = true;
+
+            }
+        }
+        if(!inter_valide){
+            throw new IllegalArgumentException("L'intervention n'a pas un UE qui est valide");
+        }
+        lesInterventions.add(intervention);
+    }
+
+    public int resteAplanifier(UE ue, TypeIntervention typeIntervention){
+        boolean ue_valide = false;
+        for(ServicePrevu service1 : servicesPrevus){
+            if(service1.getUe().equals(ue)){
+                ue_valide = true;
+            }
+        }
+        if(!ue_valide){
+            throw new IllegalArgumentException("Cette UE n'est pas enseigné par le prof");
+        }
+        int nb_heure_ue = 0;
+        int nb_heure_planifiee = 0;
+        for (ServicePrevu service : servicesPrevus)
 
 }
