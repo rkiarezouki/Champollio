@@ -1,8 +1,12 @@
 package champollion;
 
+import java.util.*;
+
 public class Enseignant extends Personne {
 
-    // TODO : rajouter les autres méthodes présentes dans le diagramme UML
+
+    List<ServicePrevu> servicesPrevus = new ArrayList<>();
+
 
     public Enseignant(String nom, String email) {
         super(nom, email);
@@ -17,8 +21,18 @@ public class Enseignant extends Personne {
      *
      */
     public int heuresPrevues() {
-        // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+       int equivalentTD = 0;
+
+       for(ServicePrevu service : servicesPrevus){
+           equivalentTD += 1.5 * service.getVolumeCM();
+           equivalentTD += service.getVolumeTD();
+           equivalentTD += 0.75 * service.getVolumeTP();
+
+           Math.round(equivalentTD);
+       }
+       return equivalentTD;
+
+
     }
 
     /**
@@ -31,8 +45,18 @@ public class Enseignant extends Personne {
      *
      */
     public int heuresPrevuesPourUE(UE ue) {
-        // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+     int equivalentTD = 0;
+
+     for(ServicePrevu service : servicesPrevus){
+         if(service.getUe() == ue){
+             equivalentTD += 1.5 * service.getVolumeCM();
+             equivalentTD += service.getVolumeTD();
+             equivalentTD += 0.75 * service.getVolumeTP();
+             Math.round(equivalentTD);
+         }
+
+     }
+     return equivalentTD;
     }
 
     /**
@@ -44,8 +68,22 @@ public class Enseignant extends Personne {
      * @param volumeTP le volume d'heures de TP
      */
     public void ajouteEnseignement(UE ue, int volumeCM, int volumeTD, int volumeTP) {
-        // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
+      boolean present = false;
+      for(ServicePrevu service : servicesPrevus){
+          if(service.getUe().equals(ue)){
+              present = true;
+              service.setVolumeCM(service.getVolumeCM()+volumeCM);
+              service.setVolumeTD(service.getVolumeTD()+volumeTD);
+              service.setVolumeTP(service.getVolumeTP()+volumeTP);
+          }
+      }
+      if(!present){
+          servicesPrevus.add(new ServicePrevu(ue, volumeCM,volumeTD, volumeTP));
+
+
+      }
     }
+
+    public void ajouterIntervention(Intervention intervention)
 
 }
